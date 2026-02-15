@@ -6,6 +6,7 @@ from ultralytics import YOLO
 from onnxruntime.quantization import quantize_dynamic, QuantType
 
 IMAGE_URL = "https://ultralytics.com/images/bus.jpg"
+NUM_RUNS = 10
 
 
 class Yolo(ABC):
@@ -92,7 +93,7 @@ class Yolov11(Yolo):
         )
 
 
-def compare_models(models, image_url, num_runs=3):
+def compare_models(models, image_url, num_runs=NUM_RUNS):
     """Compare multiple YOLO models for size and speed"""
     print("\n" + "=" * 80)
     print("YOLO MODEL COMPARISON")
@@ -187,7 +188,7 @@ if __name__ == "__main__":
     models = {"YOLOv8n": yolov8, "YOLOv11n": yolov11}
 
     # Run comprehensive comparison
-    comparison_results = compare_models(models, IMAGE_URL, num_runs=5)
+    comparison_results = compare_models(models, IMAGE_URL, num_runs=NUM_RUNS)
 
     # Test quantization for both models
     print("\n" + "=" * 80)

@@ -1,0 +1,36 @@
+@startuml
+skinparam handwritten false
+skinparam monochrome true
+
+package "1. Input & Preparation" {
+  [Raw Image] --> [Resizing & Normalization]
+  [Resizing & Normalization] --> [Grid Division (S x S)]
+}
+
+package "2. Feature Extraction (The Brain)" {
+  [Grid Division (S x S)] --> [Backbone (CNN/Conv)]
+  [Backbone (CNN/Conv)] --> [Feature Pyramid (Neck)]
+}
+
+package "3. The Prediction Head" {
+  note right of [Feature Pyramid (Neck)]
+    Classic: Uses Anchor Boxes
+    Modern: Anchor-Free (Point to Edge)
+  end note
+  [Feature Pyramid (Neck)] --> [Raw Predictions]
+  [Raw Predictions] --> [Bounding Boxes (x,y,w,h)]
+  [Raw Predictions] --> [Class Scores]
+}
+
+package "4. The Post-Processing Filter" {
+  [Bounding Boxes (x,y,w,h)] --> [IoU Calculation]
+  [IoU Calculation] --> [Non-Max Suppression (NMS)]
+  
+  note bottom of [Non-Max Suppression (NMS)]
+    In YOLO26, this stage is handled 
+    INTERNALLY during training.
+  end note
+}
+
+[Non-Max Suppression (NMS)] --> [Final Detections]
+@enduml
